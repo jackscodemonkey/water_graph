@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+    db:
+        image: postgres:alpine
+        environment:
+            POSTGRES_DB: water_works
+            POSTGRES_USER: water_works_user
+            POSTGRES_PASSWORD: water_works
+        networks:
+            - nginx_network
+    app:
+        image: water_graph
+        depends_on:
+            - db
+        networks:
+            - nginx_network
+        volumes:
+            - static_volume:/static  # <-- bind the static volume
+            - media_volume:/media  # <-- bind the media volume
+    nginx:
+         image: nginx
+         ports:
+             - 80:80
+         volumes:
+             - static_volume:/static  # <-- bind the static volume
+             - media_volume:/media  # <-- bind the media volume
+             - ./config/nginx:/etc/nginx/conf.d
+
+         depends_on:
+             - app
+         networks:
+             - nginx_network
+
+networks:
+    nginx_network:
+        driver: bridge
+
+volumes:
+    static_volume:
+    media_volume:

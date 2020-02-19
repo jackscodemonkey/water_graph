@@ -24,7 +24,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '3j@(t&n*+kro9i4#qz!vyx&99(mzi@m1-t)5t=a_(=n$s@bw#y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = int(os.environ.get('DEBUG', default=1))
 
 ALLOWED_HOSTS = []
 
@@ -83,8 +84,9 @@ DATABASES = {
         'NAME': 'water_works',
         'USER': 'water_works_user',
         'PASSWORD': 'water_works',
-        'HOST': 'localhost',
-        'PORT': '',
+        # 'HOST': 'localhost',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
@@ -126,6 +128,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+# as declared in NginX conf, it must match /opt/services/djangoapp/static/
+STATIC_ROOT = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'static')
+
+# do the same for media files, it must match /opt/services/djangoapp/media/
+MEDIA_ROOT = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'media')
 
 AUTHENTICATION_BACKENDS = (
     'graphql_jwt.backends.JSONWebTokenBackend',

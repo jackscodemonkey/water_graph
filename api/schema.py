@@ -16,6 +16,10 @@ def reverse_node_id(NodeId):
     rid = Rid(*from_global_id(NodeId))
     return rid.id
 
+def print_user_context(info):
+    user = info.context.user
+    print('User: {}'.format(user))
+
 # region Customers
 
 
@@ -521,10 +525,7 @@ class RateTypeConnection(relay.Connection):
 
 
 class Query(graphene.ObjectType):
-
-    def print_user_context(self, info):
-        user = info.context.user
-        print('User: {}'.format(user))
+    """ Graphene Schema Queries """
 
     """ Customer Queries """
     customer_read = DjangoFilterConnectionField(CustomerType, description="""
@@ -532,7 +533,7 @@ class Query(graphene.ObjectType):
 
     @permission_required('api.view_customer')
     def resolve_customer_read(self, info, **kwargs):
-        self.print_user_context(info)
+        print_user_context(info)
 
     """ Meter Type Queries """
     metertype_read = DjangoFilterConnectionField(MeterTypeType, description="""
@@ -541,7 +542,7 @@ class Query(graphene.ObjectType):
 
     @permission_required('api.view_metertype')
     def resolve_metertype_read(self, info, **kwargs):
-        self.print_user_context(info)
+        print_user_context(info)
 
     """ Meter Inentory Queries """
     meter_read = DjangoFilterConnectionField(MeterTy, description="""
@@ -551,7 +552,7 @@ class Query(graphene.ObjectType):
 
     @permission_required('api.view_meter')
     def resolve_meter(self, info, **kwargs):
-        self.print_user_context(info)
+        print_user_context(info)
 
     """ Asset Account Linking Table Queries """
     asset_account_link_read = DjangoFilterConnectionField(AccountAssetLinkType, description="""
@@ -561,7 +562,7 @@ class Query(graphene.ObjectType):
 
     @permission_required('api.view_account_asset_link')
     def resolve_asset_account_link(self, info, **kwargs):
-        self.print_user_context(info)
+        print_user_context(info)
 
     """ Consumtion Information Queries """
     consumption_read = DjangoFilterConnectionField(ConsumptionType, description="""
@@ -571,7 +572,7 @@ class Query(graphene.ObjectType):
 
     @permission_required('api.view_consumption')
     def resolve_consumption(self, info, **kwargs):
-        self.print_user_context(info)
+        print_user_context(info)
 
     """ Rate Queries """
     rate_read = DjangoFilterConnectionField(RateType, description="""
@@ -580,7 +581,7 @@ class Query(graphene.ObjectType):
 
     @permission_required('api.view_rate')
     def resolve_rate(self, info, **kwargs):
-        self.print_user_context(info)
+        print_user_context(info)
 
 # endregion Query
 

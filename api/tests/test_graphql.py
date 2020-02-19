@@ -312,10 +312,9 @@ class TestMeterType(graphql_jwt.testcases.JSONWebTokenTestCase):
 
 
 class TestMeter(graphql_jwt.testcases.JSONWebTokenTestCase):
-        """ Meter End Point Tests"""
+    """ Meter End Point Tests"""
 
     def setUp(self):
-
         self.user = get_user_model().objects.create(username='test')
 
         permission_view = Permission.objects.get(name='Can view meter')
@@ -331,7 +330,7 @@ class TestMeter(graphql_jwt.testcases.JSONWebTokenTestCase):
         self.client.authenticate(self.user)
 
     # region Authenticated Meter Tests
-    def test_createMeter(self):
+    def test_create_meter(self):
         query = """
             mutation MeterCreate($input:MeterCreateInput!){
                 meterCreate(input:$input){
@@ -358,7 +357,7 @@ class TestMeter(graphql_jwt.testcases.JSONWebTokenTestCase):
         result = self.client.execute(query, variables=variables)
         assert result.errors is None
 
-    def test_readMeter(self):
+    def test_read_meter(self):
         query = """
             query MeterRead($input:String!){
             meterRead(meterSerial_Icontains: $input){
@@ -382,7 +381,7 @@ class TestMeter(graphql_jwt.testcases.JSONWebTokenTestCase):
         assert result.errors is None
         assert result.data['meterRead']['edges'][0]['node']['installDate'] == '2020-01-30T01:08:34.028000+00:00'
 
-    def test_updateMeter(self):
+    def test_update_meter(self):
         query_read = """
             query MeterRead($input:String!){
             meterRead(meterSerial_Icontains: $input){
@@ -429,7 +428,7 @@ class TestMeter(graphql_jwt.testcases.JSONWebTokenTestCase):
         result = self.client.execute(query, variables)
         assert result.errors is None
 
-    def test_deleteMeter(self):
+    def test_delete_meter(self):
         query_read = """
             query MeterRead($input:String!){
             meterRead(meterSerial_Icontains: $input){
